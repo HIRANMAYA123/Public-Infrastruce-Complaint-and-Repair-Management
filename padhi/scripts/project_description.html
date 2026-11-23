@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CivicFix – Comprehensive Project Description & Technical Architectural Report</title>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  @page {
+    size: A4;
+    margin: 16mm 14mm 16mm 14mm;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1E293B;
+    background-color: #FFFFFF;
+    font-size: 10pt;
+    line-height: 1.55;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Page Breaks */
+  .page-break {
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .avoid-break {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Theme Tokens */
+  :root {
+    --navy-950: #0A1424;
+    --navy-900: #0F1E36;
+    --navy-800: #142D4E;
+    --navy-700: #1D3B64;
+    --navy-600: #264A7C;
+    --teal-800: #0D5C56;
+    --teal-700: #116C65;
+    --teal-600: #0D9488;
+    --teal-500: #14B8A6;
+    --teal-100: #CCFBF1;
+    --teal-50: #F0FDFA;
+    --surface-bg: #F8FAFC;
+    --surface-card: #FFFFFF;
+    --border-subtle: #E2E8F0;
+    --border-strong: #CBD5E1;
+    --text-primary: #0F172A;
+    --text-secondary: #334155;
+    --text-muted: #64748B;
+    --accent-amber: #D97706;
+    --accent-red: #DC2626;
+    --accent-green: #059669;
+    --accent-blue: #2563EB;
+  }
+
+  /* Typography */
+  h1, h2, h3, h4, h5 {
+    color: var(--navy-800);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  h1 {
+    font-size: 26pt;
+    line-height: 1.15;
+    font-weight: 800;
+  }
+
+  h2 {
+    font-size: 13.5pt;
+    line-height: 1.3;
+    margin-top: 18pt;
+    margin-bottom: 8pt;
+    padding-bottom: 4pt;
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(90deg, var(--teal-600) 0%, var(--navy-800) 45%, #E2E8F0 100%) 1;
+    display: flex;
+    align-items: center;
+  }
+
+  h3 {
+    font-size: 11pt;
+    margin-top: 12pt;
+    margin-bottom: 4pt;
+    color: var(--navy-700);
+    font-weight: 700;
+  }
+
+  h4 {
+    font-size: 9.5pt;
+    margin-top: 9pt;
+    margin-bottom: 3pt;
+    color: var(--navy-800);
+    font-weight: 600;
+  }
+
+  p {
+    margin-bottom: 6.5pt;
+    color: var(--text-secondary);
+    text-align: justify;
+    font-size: 9.5pt;
+  }
+
+  /* Running Document Header */
+  .doc-header-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1.5px solid var(--border-subtle);
+    padding-bottom: 5pt;
+    margin-bottom: 12pt;
+    font-size: 7.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .doc-header-banner .brand-mark {
+    color: var(--navy-800);
+    display: flex;
+    align-items: center;
+    gap: 4pt;
+  }
+
+  .doc-header-banner .brand-mark span {
+    color: var(--teal-600);
+  }
+
+  /* Cover Page */
+  .cover-page {
+    min-height: 250mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16mm 12mm 12mm 12mm;
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    background: radial-gradient(circle at 100% 0%, #F0FDFA 0%, #FFFFFF 45%, #F8FAFC 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--navy-800) 0%, var(--teal-600) 60%, var(--teal-500) 100%);
+  }
+
+  .cover-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--teal-50);
+    color: var(--teal-700);
+    border: 1px solid var(--border-subtle);
+    padding: 3.5px 12px;
+    font-size: 8pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-radius: 20px;
+  }
+
+  .cover-title-box {
+    margin-top: 22pt;
+  }
+
+  .cover-title {
+    font-size: 38pt;
+    font-weight: 800;
+    color: var(--navy-900);
+    line-height: 1.05;
+    margin-bottom: 6pt;
+    letter-spacing: -0.03em;
+  }
+
+  .cover-title .brand-accent {
+    color: var(--teal-600);
+  }
+
+  .cover-subtitle {
+    font-size: 13.5pt;
+    color: var(--teal-700);
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 12pt;
+  }
+
+  .cover-desc {
+    font-size: 10pt;
+    color: var(--text-secondary);
+    max-width: 92%;
+    line-height: 1.6;
+  }
+
+  .cover-metadata-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10pt;
+    margin: 18pt 0 14pt 0;
+    background: #FFFFFF;
+    padding: 12pt 14pt;
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .meta-label {
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 1.5pt;
+  }
+
+  .meta-value {
+    font-size: 9.5pt;
+    font-weight: 600;
+    color: var(--navy-900);
+  }
+
+  .cover-footer {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 10pt;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 8pt;
+    color: var(--text-muted);
+  }
+
+  /* Themed Cards & Callouts */
+  .card {
+    background: #FFFFFF;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 10pt 12pt;
+    margin-bottom: 10pt;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  }
+
+  .highlight-card {
+    background: linear-gradient(135deg, #F8FAFC 0%, var(--teal-50) 100%);
+    border-left: 4px solid var(--teal-600);
+    border-top: 1px solid var(--border-subtle);
+    border-right: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 10pt 14pt;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 10pt;
+  }
+
+  .alert-box {
+    border-radius: 6px;
+    padding: 7pt 10pt;
+    margin: 8pt 0;
+    font-size: 9pt;
+  }
+
+  .alert-amber {
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    color: #92400E;
+  }
+
+  .alert-blue {
+    background: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    color: #1E40AF;
+  }
+
+  /* Themed Tables */
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 8pt 0 11pt 0;
+    font-size: 8.5pt;
+    background: #FFFFFF;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  th, td {
+    padding: 5.5pt 7.5pt;
+    border-bottom: 1px solid var(--border-subtle);
+    border-right: 1px solid var(--border-subtle);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  th:last-child, td:last-child {
+    border-right: none;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  th {
+    background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 100%);
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 7.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-top: none;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #F8FAFC;
+  }
+
+  /* Themed Code Blocks */
+  pre, code {
+    font-family: 'JetBrains Mono', Consolas, Menlo, Monaco, monospace;
+    font-size: 8pt;
+  }
+
+  code {
+    background: #F1F5F9;
+    color: var(--navy-900);
+    padding: 1px 4pt;
+    border-radius: 3px;
+    border: 1px solid #E2E8F0;
+    font-weight: 500;
+  }
+
+  pre {
+    background: #0B1424;
+    color: #E2E8F0;
+    padding: 8pt 10pt;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 7pt 0 10pt 0;
+    line-height: 1.45;
+    border: 1px solid #1E293B;
+  }
+
+  pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 7pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-urgent { background: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; }
+  .badge-high { background: #FFEDD5; color: #9A3412; border: 1px solid #FED7AA; }
+  .badge-medium { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+  .badge-resolved { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
+  .badge-navy { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; }
+
+  /* Architecture Diagram Cards */
+  .arch-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 6pt;
+    margin: 8pt 0;
+  }
+
+  .arch-tier {
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    background: #FFFFFF;
+    padding: 7pt 10pt;
+    border-left: 4px solid var(--teal-600);
+  }
+
+  .arch-tier-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3pt;
+  }
+
+  .arch-tier-title {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: var(--navy-800);
+  }
+
+  .arch-tier-tech {
+    font-size: 7.5pt;
+    font-weight: 600;
+    color: var(--teal-700);
+    background: var(--teal-50);
+    border: 1px solid var(--teal-100);
+    padding: 1.5px 6px;
+    border-radius: 4px;
+  }
+
+  .arch-tier-body {
+    font-size: 8.5pt;
+    color: var(--text-secondary);
+  }
+
+  /* Process Flow Steps */
+  .flow-step {
+    display: flex;
+    gap: 10pt;
+    margin-bottom: 7pt;
+    align-items: flex-start;
+  }
+
+  .flow-num {
+    flex-shrink: 0;
+    width: 20pt;
+    height: 20pt;
+    background: linear-gradient(135deg, var(--navy-800) 0%, var(--teal-600) 100%);
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 8.5pt;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(13, 148, 136, 0.2);
+  }
+
+  .flow-content {
+    flex: 1;
+  }
+
+  .flow-content strong {
+    color: var(--navy-800);
+    font-size: 9.5pt;
+  }
+
+  .flow-content p {
+    margin-bottom: 2pt;
+    font-size: 8.5pt;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ================= COVER PAGE ================= -->
+  <div class="cover-page page-break">
+    <div>
+      <span class="cover-badge">Municipal Technology & Smart Governance</span>
+      
+      <div class="cover-title-box">
+        <h1 class="cover-title">Civic<span class="brand-accent">Fix</span></h1>
+        <div class="cover-subtitle">Public Infrastructure Complaint & Repair Management System</div>
+        <p class="cover-desc">
+          An enterprise-grade, role-based civic grievance remediation platform engineered to streamline municipal reporting, automated triage, SLA enforcement, field technician dispatch, and verified photographic resolution.
+        </p>
+      </div>
+
+      <div class="cover-metadata-grid">
+        <div class="meta-item">
+          <span class="meta-label">Architecture</span>
+          <span class="meta-value">MERN Stack (MongoDB 8/9, Express, React 18, Node.js)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Domain</span>
+          <span class="meta-value">Smart City Governance, Public Infrastructure & DBMS</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Design Standard</span>
+          <span class="meta-value">Civic Design Tokens (Tailwind CSS, Recharts, Lucide)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Release Version</span>
+          <span class="meta-value">2.0.0 (Production Verified Release)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Document Code</span>
+          <span class="meta-value">CIVICFIX-ARCH-DOC-2026</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Target Audience</span>
+          <span class="meta-value">Academic Evaluators, Systems Architects & Municipal Engineers</span>
+        </div>
+      </div>
+
+      <div class="highlight-card">
+        <strong style="color: var(--primary); font-size: 9.5pt;">Key System Pillars:</strong>
+        <p style="font-size: 9pt; margin-top: 4pt; margin-bottom: 0;">
+          Strict 3-Way Role Specialization (Citizens, Municipal Admins, Field Specialists) • Immutable State Audit History • Native MongoDB Aggregation Pipelines ($facet, $lookup, $group) • Strict JSON Schema Validation • Before/After Photographic Evidence Tracking • SLA Resolution Deadlines.
+        </p>
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <span>CivicFix Engineering Group © 2026</span>
+      <span>Confidential & Academic Evaluation Release</span>
+    </div>
+  </div>
+
+  <!-- ================= SECTION 1: EXECUTIVE SUMMARY ================= -->
+  <div class="page-break">
+
+    <div class="doc-header-banner">
+      <div class="brand-mark">CIVIC<span>FIX</span> &bull; MUNICIPAL PLATFORM</div>
+      <div>TECHNICAL ARCHITECTURAL REPORT &bull; 2026</div>
+    </div>
+
+    <h2>1. Executive Summary & Problem Formulation</h2>
+
+    <h3>1.1 The Municipal Infrastructure Challenge</h3>
+    <p>
+      Rapid urbanization and expanding city boundaries place severe burdens on municipal governance bodies. Essential civic amenities—such as arterial roadways, pedestrian sidewalks, storm runoff canals, water distribution conduits, and electrical illumination grids—require continuous surveillance, rapid defect remediation, and transparent accountability.
+    </p>
+    <p>
+      Traditional civic grievance setups suffer from fundamental structural limitations:
+    </p>
+    <ul style="margin-left: 18pt; margin-bottom: 10pt; font-size: 9.5pt; color: #334155;">
+      <li><strong>Information Asymmetry:</strong> Citizens lodge grievances into opaque portals without verifiable tracking numbers or estimated completion dates.</li>
+      <li><strong>Absence of Field Accountability:</strong> Municipal departments lack real-time visibility into whether repairs were performed to code or if materials were actually used.</li>
+      <li><strong>Lack of SLA Enforcement:</strong> Critical hazards (e.g., live electrical cable exposure, open manholes) sit unattended without automated escalation or deadline computations.</li>
+      <li><strong>Fragmented Relational Data:</strong> Legacy systems struggle to provide consolidated telemetry across disparate municipal wards, departments, and field personnel.</li>
+    </ul>
+
+    <h3>1.2 The CivicFix Solution</h3>
+    <p>
+      <strong>CivicFix</strong> is designed to solve these systemic failures. Combining modern document database modeling (MongoDB) with a high-performance, responsive single-page web interface (React 18 & Vite), the system establishes an end-to-end audit trail for every civic failure reported.
+    </p>
+
+    <div class="card avoid-break">
+      <h4 style="color: var(--primary); margin-bottom: 6pt;">Core Functional Objectives</h4>
+      <table style="margin: 0;">
+        <thead>
+          <tr>
+            <th style="width: 25%;">Stakeholder</th>
+            <th>Primary Capabilities & Value Delivered</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Citizens</strong></td>
+            <td>Lodge photo-verified complaints with GPS geolocation, track live timeline progression, receive resolution notices, and submit 1–5 star ratings.</td>
+          </tr>
+          <tr>
+            <td><strong>Municipal Admins</strong></td>
+            <td>Executive command dashboard with Recharts telemetry, SLA violation alerts, complaint triage registry, and workforce management.</td>
+          </tr>
+          <tr>
+            <td><strong>Field Specialists</strong></td>
+            <td>Digital work order queue, state transitions (Pending → In Progress → Work Completed), and before-and-after photographic evidence uploads.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>2. System Architecture & Multi-Tier Topology</h2>
+    <p>
+      CivicFix is architected following clean separation of concerns across four logical tiers:
+    </p>
+
+    <div class="arch-diagram avoid-break">
+      <div class="arch-tier">
+        <div class="arch-tier-header">
+          <span class="arch-tier-title">Tier 1: Presentation Layer</span>
+          <span class="arch-tier-tech">React 18 • Vite • Tailwind CSS • Recharts</span>
+        </div>
+        <div class="arch-tier-body">
+          Responsive Single Page Application (SPA) utilizing React Router v6 for role-guarded routes, React Context API for global authentication and toast alerts, and Recharts for live municipal KPI visualization.
+        </div>
+      </div>
+
+      <div class="arch-tier">
+        <div class="arch-tier-header">
+          <span class="arch-tier-title">Tier 2: API Gateway & Security Guard</span>
+          <span class="arch-tier-tech">Express.js • JWT • Multer • CORS • Morgan</span>
+        </div>
+        <div class="arch-tier-body">
+          Stateless RESTful gateway enforcing JWT token authentication, role authorization middleware (RBAC), multi-part image streaming for photographic evidence, and comprehensive request logging.
+        </div>
+      </div>
+
+      <div class="arch-tier">
+        <div class="arch-tier-header">
+          <span class="arch-tier-title">Tier 3: Business Logic & Orchestration Service</span>
+          <span class="arch-tier-tech">Node.js Controllers • SLA Engine • Audit Dispatcher</span>
+        </div>
+        <div class="arch-tier-body">
+          Autonomous controller layer managing SLA deadline calculation, complaint tracking code generation (<code>CF-YYYY-XXXX</code>), notification broadcasting, and status transition enforcement.
+        </div>
+      </div>
+
+      <div class="arch-tier">
+        <div class="arch-tier-header">
+          <span class="arch-tier-title">Tier 4: Document Data Layer</span>
+          <span class="arch-tier-tech">MongoDB 8/9 • Mongoose • Compound Indexes • $facet</span>
+        </div>
+        <div class="arch-tier-body">
+          Operational document datastore with schema validation, compound and sparse indexing, multi-stage aggregation pipelines for telemetry, and atomic transaction updates.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SECTION 3: ROLE-BASED ACCESS CONTROL ================= -->
+  <div class="page-break">
+
+    <div class="doc-header-banner">
+      <div class="brand-mark">CIVIC<span>FIX</span> &bull; MUNICIPAL PLATFORM</div>
+      <div>TECHNICAL ARCHITECTURAL REPORT &bull; 2026</div>
+    </div>
+
+    <h2>3. Role-Based Access Control (RBAC) Matrix</h2>
+    <p>
+      Security and governance compliance require distinct operational boundaries. CivicFix implements an RBAC authorization guard:
+    </p>
+
+    <table class="avoid-break">
+      <thead>
+        <tr>
+          <th>System Feature / Action</th>
+          <th style="text-align: center; width: 15%;">Citizen</th>
+          <th style="text-align: center; width: 18%;">Municipal Admin</th>
+          <th style="text-align: center; width: 18%;">Field Specialist</th>
+          <th style="text-align: center; width: 15%;">Public (Guest)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>View Landing Page & Public Telemetry</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">✓</td>
+        </tr>
+        <tr>
+          <td>Self-Registration with Ward Selection</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">✓</td>
+        </tr>
+        <tr>
+          <td>Lodge Infrastructure Grievance with Photo</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>View Personal Complaints & History</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>Withdraw Pending Complaint</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>Submit Post-Resolution Rating & Feedback</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>Reopen Resolved Grievance with Justification</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>Access Executive Telemetry & Recharts KPI</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>Master Triage Registry (Assign / Reject)</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>Department & Ward Directory Management</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>Field Specialist Onboarding & Caseload Tracking</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>Access Assigned Digital Work Orders</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>Transition Task State to 'In Progress'</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>Upload Before/After Photos & Cost Logs</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>Mark Task 'Work Completed'</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+        <tr>
+          <td>Final Municipal Verification & Resolution Mark</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">✓</td>
+          <td style="text-align: center;">—</td>
+          <td style="text-align: center;">—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>4. End-to-End Complaint Lifecycle & SLA Automation</h2>
+    <p>
+      The core lifecycle guarantees transparency, immutability, and accountability:
+    </p>
+
+    <div class="avoid-break" style="margin-top: 10pt;">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-content">
+          <strong>Citizen Submission & SLA Calculation</strong>
+          <p>The citizen uploads a photo, selects a category and ward, and describes the defect. The backend computes the deadline: <code>resolutionDeadline = submissionDate + category.defaultSlaHours</code>, generates an audit tracking code (e.g., <code>CF-2026-104921</code>), and saves initial status <code>Pending</code>.</p>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-content">
+          <strong>Administrative Triage & Worker Dispatch</strong>
+          <p>Municipal admins inspect incoming complaints on the triage board. The admin selects a qualified field technician from the relevant department. Status transitions to <code>Assigned</code>, creating an <code>Assignment</code> record and alerting the worker.</p>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-content">
+          <strong>Field Arrival & Work Inception</strong>
+          <p>The technician reviews the GPS coordinates, arrives on site, and clicks "Start Work". Status transitions to <code>In Progress</code> with an immutable entry in <code>StatusHistory</code>.</p>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-content">
+          <strong>Field Repair Execution & Evidence Upload</strong>
+          <p>Technician completes physical repairs (e.g., asphalt patching, pipe sleeve replacement). The technician uploads photographic proof (before & after), logs materials used and cost incurred, transitioning the state to <code>Work Completed</code>.</p>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <div class="flow-content">
+          <strong>Administrative Audit & Citizen Feedback</strong>
+          <p>Admin verifies photographic evidence and marks the complaint <code>Resolved</code>. The citizen receives an instant alert and submits a 1–5 star rating with satisfaction remarks, updating the worker's average rating.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SECTION 5: DATABASE ARCHITECTURE ================= -->
+  <div class="page-break">
+
+    <div class="doc-header-banner">
+      <div class="brand-mark">CIVIC<span>FIX</span> &bull; MUNICIPAL PLATFORM</div>
+      <div>TECHNICAL ARCHITECTURAL REPORT &bull; 2026</div>
+    </div>
+
+    <h2>5. MongoDB Database Design & Collections Catalog</h2>
+    <p>
+      CivicFix uses MongoDB with Mongoose ODM schemas, enforcing structural validation, referential integrity via ObjectIds, and compound indexes for high query throughput.
+    </p>
+
+    <div class="card avoid-break">
+      <h4 style="color: var(--primary); margin-bottom: 6pt;">Core Document Collections (10 Total)</h4>
+      <table style="margin: 0;">
+        <thead>
+          <tr>
+            <th style="width: 20%;">Collection</th>
+            <th style="width: 45%;">Key Document Attributes</th>
+            <th>Primary Indexes & Integrity Rules</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>users</code></td>
+            <td><code>_id, email, password, role, fullName, phone, wardId, departmentId, employeeCode, ratingAvg</code></td>
+            <td><code>UNIQUE(email)</code>, <code>INDEX(role)</code>, <code>SPARSE(employeeCode)</code></td>
+          </tr>
+          <tr>
+            <td><code>departments</code></td>
+            <td><code>_id, name, code, description, headName, contactEmail, helplineNumber, budgetAllocated</code></td>
+            <td><code>UNIQUE(name)</code>, <code>UNIQUE(code)</code></td>
+          </tr>
+          <tr>
+            <td><code>wards</code></td>
+            <td><code>_id, wardNumber, name, zone, councillorName, councillorPhone, population, areaSqKm</code></td>
+            <td><code>UNIQUE(wardNumber)</code>, <code>INDEX(zone)</code></td>
+          </tr>
+          <tr>
+            <td><code>categories</code></td>
+            <td><code>_id, name, departmentId, defaultSlaHours, severityLevel, iconName</code></td>
+            <td><code>UNIQUE(name)</code>, <code>INDEX(departmentId)</code></td>
+          </tr>
+          <tr>
+            <td><code>complaints</code></td>
+            <td><code>_id, complaintCode, citizenId, categoryId, wardId, title, priority, status, assignedWorkerId, submissionDate, resolutionDeadline, imageUrl</code></td>
+            <td><code>UNIQUE(complaintCode)</code>, <code>COMPOUND(status, priority)</code>, <code>INDEX(citizenId)</code>, <code>INDEX(assignedWorkerId)</code></td>
+          </tr>
+          <tr>
+            <td><code>assignments</code></td>
+            <td><code>_id, complaintId, workerId, assignedByAdminId, status, notes, assignedAt</code></td>
+            <td><code>INDEX(complaintId)</code>, <code>INDEX(workerId)</code></td>
+          </tr>
+          <tr>
+            <td><code>statushistories</code></td>
+            <td><code>_id, complaintId, previousStatus, newStatus, changedByUserId, remarks, changedAt</code></td>
+            <td><code>COMPOUND(complaintId, changedAt)</code></td>
+          </tr>
+          <tr>
+            <td><code>repairupdates</code></td>
+            <td><code>_id, complaintId, workerId, updateNotes, beforeImageUrl, afterImageUrl, materialsUsed, costIncurred</code></td>
+            <td><code>INDEX(complaintId)</code>, <code>INDEX(workerId)</code></td>
+          </tr>
+          <tr>
+            <td><code>feedbacks</code></td>
+            <td><code>_id, complaintId, citizenId, rating, satisfactionLevel, comments, submittedAt</code></td>
+            <td><code>UNIQUE(complaintId)</code>, <code>INDEX(rating)</code></td>
+          </tr>
+          <tr>
+            <td><code>notifications</code></td>
+            <td><code>_id, userId, complaintId, title, message, isRead, notificationType</code></td>
+            <td><code>COMPOUND(userId, isRead)</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.1 Detailed Collection Specifications</h3>
+
+    <h4>1. `complaints` Document Schema</h4>
+    <p>The central collection representing municipal grievances:</p>
+    <pre><code>{
+  _id: ObjectId("6aff13983acad5c61847a097"),
+  complaintCode: "CF-2026-104921",
+  citizenId: ObjectId("6aff13973acad5c61847a08a"),
+  categoryId: ObjectId("6aff13973acad5c61847a076"),
+  wardId: ObjectId("6aff13973acad5c61847a06c"),
+  title: "Deep crater pothole near metro pillar 42",
+  description: "Severe crater approx 2.5 feet wide causing accidents during evening rush hour.",
+  locationAddress: "Under MG Road Metro Station Pillar 42, Central Promenade",
+  landmark: "Opposite City Center Mall Entrance",
+  coordinates: { latitude: 12.971598, longitude: 77.594562 },
+  imageUrl: "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7",
+  priority: "High",                    // Low | Medium | High | Urgent
+  status: "In Progress",               // Pending | Assigned | In Progress | Work Completed | Resolved | Rejected
+  assignedWorkerId: ObjectId("6aff13983acad5c61847a090"),
+  assignedAt: ISODate("2026-11-17T15:19:52.235Z"),
+  submissionDate: ISODate("2026-11-17T11:19:52.235Z"),
+  resolutionDeadline: ISODate("2026-11-20T15:19:52.235Z"),
+  adminRemarks: "Assigned to Ward 101 Road Rapid Response Team under Ramesh Kumar.",
+  createdAt: ISODate("2026-11-19T15:19:52.236Z"),
+  updatedAt: ISODate("2026-11-19T15:19:52.236Z")
+}</code></pre>
+
+    <h4>2. `repairupdates` Document Schema</h4>
+    <p>Provides tamper-resistant proof of physical field work:</p>
+    <pre><code>{
+  _id: ObjectId("..."),
+  complaintId: ObjectId("6aff13983acad5c61847a097"),
+  workerId: ObjectId("6aff13983acad5c61847a090"),
+  updateNotes: "Excavated crater perimeter, laid hot-mix bituminous asphalt, compacted with road roller.",
+  beforeImageUrl: "/uploads/before_repair_104921.jpg",
+  afterImageUrl: "/uploads/after_repair_104921.jpg",
+  materialsUsed: "120 kg Bitumen mix, 50 kg Aggregate gravel",
+  costIncurred: 4500,
+  updateType: "Work Finished",
+  createdAt: ISODate("2026-11-18T14:30:00.000Z")
+}</code></pre>
+  </div>
+
+  <!-- ================= SECTION 6: ADVANCED AGGREGATIONS ================= -->
+  <div class="page-break">
+
+    <div class="doc-header-banner">
+      <div class="brand-mark">CIVIC<span>FIX</span> &bull; MUNICIPAL PLATFORM</div>
+      <div>TECHNICAL ARCHITECTURAL REPORT &bull; 2026</div>
+    </div>
+
+    <h2>6. MongoDB Advanced Aggregation Pipelines</h2>
+    <p>
+      CivicFix leverages native MongoDB pipelines instead of expensive client-side joins or traditional relational SQL queries:
+    </p>
+
+    <h3>6.1 Multi-Faceted Executive Telemetry Pipeline (`$facet`)</h3>
+    <p>
+      Computes three disparate KPI dimensions (status breakdown, priority distribution, and overdue ticket counts) in a single database round-trip for the admin dashboard:
+    </p>
+    <pre><code>const [summary] = await Complaint.aggregate([
+  {
+    $facet: {
+      statusBreakdown: [
+        { $group: { _id: '$status', count: { $sum: 1 } } }
+      ],
+      priorityBreakdown: [
+        { $group: { _id: '$priority', count: { $sum: 1 } } }
+      ],
+      overdueTickets: [
+        {
+          $match: {
+            status: { $nin: ['Resolved', 'Rejected'] },
+            resolutionDeadline: { $lt: new Date() }
+          }
+        },
+        { $count: 'overdueCount' }
+      ]
+    }
+  }
+]);</code></pre>
+
+    <h3>6.2 Cross-Collection Department Resolution Pipeline (`$lookup` & `$filter`)</h3>
+    <p>
+      Calculates real-time municipal departmental performance by joining categories and complaints:
+    </p>
+    <pre><code>db.departments.aggregate([
+  {
+    $lookup: {
+      from: 'categories',
+      localField: '_id',
+      foreignField: 'departmentId',
+      as: 'deptCategories'
+    }
+  },
+  {
+    $lookup: {
+      from: 'complaints',
+      localField: 'deptCategories._id',
+      foreignField: 'categoryId',
+      as: 'complaints'
+    }
+  },
+  {
+    $project: {
+      name: 1,
+      code: 1,
+      totalComplaints: { $size: '$complaints' },
+      resolvedCount: {
+        $size: {
+          $filter: {
+            input: '$complaints',
+            as: 'c',
+            cond: { $eq: ['$$c.status', 'Resolved'] }
+          }
+        }
+      },
+      inProgressCount: {
+        $size: {
+          $filter: {
+            input: '$complaints',
+            as: 'c',
+            cond: { $in: ['$$c.status', ['Assigned', 'In Progress', 'Work Completed']] }
+          }
+        }
+      }
+    }
+  }
+]);</code></pre>
+
+    <h3>6.3 Pre-Defined Database Aggregation Views</h3>
+    <p>
+      Three views defined in <code>database/mongo-aggregation-views.js</code> materialize key operational abstractions:
+    </p>
+    <ul style="margin-left: 18pt; font-size: 9.5pt; color: #334155;">
+      <li><code>complaint_overview</code>: Denormalizes complaints with citizen names, ward designations, and department codes.</li>
+      <li><code>department_complaint_summary</code>: Aggregates caseload density, resolution rates, and budget allocations per department.</li>
+      <li><code>worker_performance_summary</code>: Computes active work order counts, completed repairs, and citizen rating averages per field specialist.</li>
+    </ul>
+  </div>
+
+  <!-- ================= SECTION 7: REST API REFERENCE ================= -->
+  <div class="page-break">
+
+    <div class="doc-header-banner">
+      <div class="brand-mark">CIVIC<span>FIX</span> &bull; MUNICIPAL PLATFORM</div>
+      <div>TECHNICAL ARCHITECTURAL REPORT &bull; 2026</div>
+    </div>
+
+    <h2>7. RESTful API Specification Catalog</h2>
+    <p>
+      All endpoints are mounted on <code>/api</code>, authenticate via <code>Authorization: Bearer &lt;JWT&gt;</code>, and return structured JSON responses.
+    </p>
+
+    <div class="card avoid-break">
+      <h4 style="color: var(--primary); margin-bottom: 6pt;">Authentication Module (<code>/api/auth</code>)</h4>
+      <table style="margin: 0;">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Method</th>
+            <th style="width: 32%;">Endpoint</th>
+            <th style="width: 18%;">Access</th>
+            <th>Description & Request Body</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-navy">POST</span></td>
+            <td><code>/api/auth/register</code></td>
+            <td>Public</td>
+            <td>Register citizen account. Body: <code>{ email, password, fullName, phone, wardId, address }</code></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">POST</span></td>
+            <td><code>/api/auth/login</code></td>
+            <td>Public</td>
+            <td>Authenticates credentials. Returns JWT token and sanitized user profile object.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">GET</span></td>
+            <td><code>/api/auth/me</code></td>
+            <td>Authenticated</td>
+            <td>Returns logged-in user profile, roles, and department/ward populated details.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">PUT</span></td>
+            <td><code>/api/auth/profile</code></td>
+            <td>Authenticated</td>
+            <td>Update profile information (full name, phone number, residential address).</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card avoid-break">
+      <h4 style="color: var(--primary); margin-bottom: 6pt;">Citizen Grievance Module (<code>/api/complaints</code>)</h4>
+      <table style="margin: 0;">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Method</th>
+            <th style="width: 32%;">Endpoint</th>
+            <th style="width: 18%;">Access</th>
+            <th>Description & Request Body</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-navy">POST</span></td>
+            <td><code>/api/complaints</code></td>
+            <td>Citizen</td>
+            <td>Submit new grievance with photo upload (Multer multipart form-data).</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">GET</span></td>
+            <td><code>/api/complaints/my</code></td>
+            <td>Citizen</td>
+            <td>Fetch authenticated citizen's complaints with status & search query filtering.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">GET</span></td>
+            <td><code>/api/complaints/:id</code></td>
+            <td>Authenticated</td>
+            <td>Complete detail view including timeline history, assigned worker, and repair photos.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">PUT</span></td>
+            <td><code>/api/complaints/:id</code></td>
+            <td>Citizen</td>
+            <td>Edit pending complaint details and location prior to admin assignment.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">POST</span></td>
+            <td><code>/api/complaints/:id/withdraw</code></td>
+            <td>Citizen</td>
+            <td>Withdraws a pending complaint from triage review.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">POST</span></td>
+            <td><code>/api/complaints/:id/reopen</code></td>
+            <td>Citizen</td>
+            <td>Reopens a resolved complaint if civic failure reoccurs. Body: <code>{ reason }</code></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">POST</span></td>
+            <td><code>/api/complaints/feedback</code></td>
+            <td>Citizen</td>
+            <td>Submit 1–5 star rating & feedback. Body: <code>{ complaintId, rating, comments }</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card avoid-break">
+      <h4 style="color: var(--primary); margin-bottom: 6pt;">Municipal Administration Module (<code>/api/admin</code>)</h4>
+      <table style="margin: 0;">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Method</th>
+            <th style="width: 32%;">Endpoint</th>
+            <th style="width: 18%;">Access</th>
+            <th>Description & Parameters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-navy">GET</span></td>
+            <td><code>/api/admin/stats</code></td>
+            <td>Admin</td>
+            <td>Computes city-wide telemetry, Recharts data, SLA metrics, and worker leaderboards.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">GET</span></td>
+            <td><code>/api/admin/complaints</code></td>
+            <td>Admin</td>
+            <td>Master triage query with sorting, pagination, department, and priority filtering.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">POST</span></td>
+            <td><code>/api/admin/assign</code></td>
+            <td>Admin</td>
+            <td>Assign worker to complaint. Body: <code>{ complaintId, workerId, notes }</code></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">POST</span></td>
+            <td><code>/api/admin/status</code></td>
+            <td>Admin</td>
+            <td>Transitions complaint state (e.g., to 'Resolved' or 'Rejected').</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">GET / POST</span></td>
+            <td><code>/api/admin/workers</code></td>
+            <td>Admin</td>
+            <td>List active field technicians or register a new certified field worker.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">GET / POST</span></td>
+            <td><code>/api/admin/departments</code></td>
+            <td>Admin</td>
+            <td>Retrieve department directory or register a new municipal department division.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">GET / POST</span></td>
+            <td><code>/api/admin/wards</code></td>
+            <td>Admin</td>
+            <td>List administrative wards or define a new municipal ward boundary.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card avoid-break">
+      <h4 style="color: var(--primary); margin-bottom: 6pt;">Field Worker Module (<code>/api/worker</code>)</h4>
+      <table style="margin: 0;">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Method</th>
+            <th style="width: 32%;">Endpoint</th>
+            <th style="width: 18%;">Access</th>
+            <th>Description & Parameters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-navy">GET</span></td>
+            <td><code>/api/worker/tasks</code></td>
+            <td>Field Worker</td>
+            <td>Fetch work orders assigned to current technician with status filtering.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">PUT</span></td>
+            <td><code>/api/worker/tasks/:id/status</code></td>
+            <td>Field Worker</td>
+            <td>Update status to 'In Progress'. Body: <code>{ status, remarks }</code></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-navy">POST</span></td>
+            <td><code>/api/worker/tasks/:id/updates</code></td>
+            <td>Field Worker</td>
+            <td>Upload before/after repair photos, cost, and mark task 'Work Completed'.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= SECTION 8: FRONTEND & EVALUATION ================= -->
+  <div class="page-break">
+
+    <div class="doc-header-banner">
+      <div class="brand-mark">CIVIC<span>FIX</span> &bull; MUNICIPAL PLATFORM</div>
+      <div>TECHNICAL ARCHITECTURAL REPORT &bull; 2026</div>
+    </div>
+
+    <h2>8. Frontend Engineering & Visual System</h2>
+    <p>
+      The client interface is engineered using <strong>React 18</strong> and <strong>Vite</strong>, styled with a bespoke municipal design system built on <strong>Tailwind CSS</strong>.
+    </p>
+
+    <div class="card avoid-break">
+      <h4 style="color: var(--primary); margin-bottom: 6pt;">Visual Design Tokens</h4>
+      <table style="margin: 0;">
+        <thead>
+          <tr>
+            <th>Element</th>
+            <th>Hex Value</th>
+            <th>Semantic Usage in CivicFix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Primary Navy</strong></td>
+            <td><code>#142D4E</code></td>
+            <td>Header navigation, primary buttons, modal headers, major titles.</td>
+          </tr>
+          <tr>
+            <td><strong>Secondary Teal</strong></td>
+            <td><code>#168C83</code></td>
+            <td>Interactive accents, active tab indicators, metric icon highlights.</td>
+          </tr>
+          <tr>
+            <td><strong>Surface Background</strong></td>
+            <td><code>#F7F8FA</code></td>
+            <td>Off-white layout canvas reducing optical strain during extended triage.</td>
+          </tr>
+          <tr>
+            <td><strong>Card Background</strong></td>
+            <td><code>#FFFFFF</code></td>
+            <td>Pure white container surfaces with subtle borders (<code>#E2E8F0</code>).</td>
+          </tr>
+          <tr>
+            <td><strong>Severity Red</strong></td>
+            <td><code>#DC2626</code></td>
+            <td>Urgent priority hazards, SLA overdue alerts, destructive actions.</td>
+          </tr>
+          <tr>
+            <td><strong>Success Emerald</strong></td>
+            <td><code>#059669</code></td>
+            <td>Verified resolutions, positive ratings, completed repair indicators.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>9. Installation, Setup & Evaluator Quickstart</h2>
+
+    <div class="alert-box alert-blue avoid-break">
+      <strong>Single-Command Orchestration:</strong> From the project root, run <code>npm run dev</code> to concurrently start MongoDB, the Express API on port <code>5001</code>, and the Vite client on port <code>5173</code>.
+    </div>
+
+    <h3>9.1 Pre-Seeded Evaluation Credentials</h3>
+    <p>
+      The login screen features <strong>1-Click Quick Demo Switchers</strong> for instant testing:
+    </p>
+
+    <table class="avoid-break">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Login Email</th>
+          <th>Password</th>
+          <th>Designation & Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Municipal Admin</strong></td>
+          <td><code>admin@civicfix.gov.in</code></td>
+          <td><code>Password123!</code></td>
+          <td>Chief Municipal Commissioner Roy. Access full command center, triage board, and SLA reports.</td>
+        </tr>
+        <tr>
+          <td><strong>Citizen</strong></td>
+          <td><code>citizen@civicfix.org</code></td>
+          <td><code>Password123!</code></td>
+          <td>Aarav Patel (Central Promenade). Test filing grievances, tracking timeline, and star ratings.</td>
+        </tr>
+        <tr>
+          <td><strong>Field Specialist</strong></td>
+          <td><code>worker@civicfix.gov.in</code></td>
+          <td><code>Password123!</code></td>
+          <td>Ramesh Kumar (Roads Specialist). Test task claiming, on-site repair notes, and photo uploads.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>9.2 macOS Port Configuration Notice</h3>
+    <div class="alert-box alert-amber avoid-break">
+      <strong>Port 5000 Conflict Resolution:</strong> macOS AirPlay Receiver reserves port 5000 by default. CivicFix backend is configured to run on port <code>5001</code>, and the Vite development server proxies <code>/api</code> and <code>/uploads</code> directly to <code>http://localhost:5001</code>.
+    </div>
+
+    <h2>10. Conclusion & Future Roadmap</h2>
+    <p>
+      <strong>CivicFix</strong> demonstrates the power of modern full-stack document engineering in transforming civic administration. By enforcing accountability through photo verification, transparent timelines, and automated SLA tracking, municipal administrations can resolve infrastructure bottlenecks faster and with greater citizen satisfaction.
+    </p>
+    <ul style="margin-left: 18pt; font-size: 9.5pt; color: #334155;">
+      <li><strong>AI Defect Classification:</strong> Integration of Gemini Vision API to auto-classify road cracks, illegal dumping, and streetlight defects directly from citizen photos.</li>
+      <li><strong>Geospatial Heatmaps:</strong> Interactive Mapbox GIS layers displaying live municipal fault concentrations across ward boundaries.</li>
+      <li><strong>Offline Mobile PWA:</strong> Native service worker caching enabling field technicians to record repairs in underground or low-connectivity zones.</li>
+    </ul>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "padhi-workspace",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "cd padhi && npm run dev",
+    "install": "cd padhi && npm install"
+  }
+}
