@@ -12,7 +12,7 @@ if (git diff --cached --quiet) {
 }
 
 # Push to remote
-git push origin master
+git push origin main
 
 # Deploy with Vercel CLI (production)
 vercel --prod
